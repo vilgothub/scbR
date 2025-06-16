@@ -192,9 +192,10 @@ add_text_variables <- function(dfli, variable_list) {
   if ("år" %in% colnames(df)) {
     df <- dplyr::mutate(df, datum = as.Date(paste0(df$år, "-01-01")))
   } else if ("månad" %in% colnames(df)) {
-    df <- dplyr::mutate(df, datum = as.Date(zoo::as.yearmon(df$månad, format = "%YM%m")))
+    df <- dplyr::mutate(df, datum = as.Date(paste0(substr(månad, 1, 4), "-", substr(månad, 6, 7), "-01")))
   } else if ("kvartal" %in% colnames(df)) {
-    df <- dplyr::mutate(df, datum = as.Date(zoo::as.yearqtr(df$kvartal, format = "%YK%q")))
+    df <- dplyr::mutate(df, datum = as.Date(paste0(substr(kvartal, 1, 4), "-",(as.numeric(substr(kvartal, 6, 6)) - 1) * 3 + 1, "-01" )))
+
   } else {
     column_order <- setdiff(column_order, "datum")
   }
